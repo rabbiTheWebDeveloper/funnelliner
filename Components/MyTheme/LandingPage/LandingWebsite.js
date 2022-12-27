@@ -1,29 +1,21 @@
-import { Box, Button, Container, Grid, TextField } from '@mui/material';
-import Modal from '@mui/material/Modal';
-import Link from 'next/link';
+import { TabContext, TabPanel, TabList } from '@mui/lab';
+import { Box, Button, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Tab, TextField } from '@mui/material';
 import React, { useState } from 'react';
+import { BsCodeSlash } from 'react-icons/bs';
+import Modal from '@mui/material/Modal';
 import { BiLinkAlt } from 'react-icons/bi';
+import Link from 'next/link';
 import { FiEdit } from 'react-icons/fi';
 
 
 
-const DashboardSetting = () => {
+const LandingWebsite = () => {
 
-  // Filter 
-  const [age, setAge] = useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  // Tabs
-  const [value, setValue] = useState('1');
-
-  const handleChangeTab = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  return (
+    // ViewPreviewModel
+    const [openPreview, setOpenPreview] = useState(false);
+    const handlePreview = () => setOpenPreview(true);
+    const previewClose = () => setOpenPreview(false);
 
     // OpenSales Modal 
     const [openSales, setOpenSales] = useState(false);
@@ -32,43 +24,49 @@ const DashboardSetting = () => {
 
 
 
-    <>
+    return (
 
-      <section className='TopSellingProducts DashboardSetting'>
 
-        <Container maxWidth="sm">
 
-          <Grid Container spacing={3}>
+        <>
 
-              <Grid item xs={12}>
+        <section className='TopSellingProducts DashboardSetting LandingWebsite'>
+
+            <Container maxWidth="sm">
+
+            <Grid Container spacing={3}>
+
+                <Grid item xs={12}>
 
                 <div className="Header d_flex d_justify">
 
-                  {/* Left */}
-                  <div className="Left d_flex">
-                  
+                    {/* Left */}
+                    <div className="Left d_flex">
+                    
                     <div className="svg">
-                        <AiOutlineSetting/>
+                        <BsCodeSlash/>
                     </div>
 
                         <div className="text">
-                            <h4>Settings</h4>
-                            <p>Update your shop info and other settings here</p>
+                            <h4>Landing Page Template</h4>
+                            <p>choose your theme here and customize as you want</p>
                         </div>
 
                     </div>
                     
                 </div>   
 
-              </Grid>
+                </Grid>
 
-          </Grid>
+                {/* LandingWebsite */}
+                <div className="LandingWebsiteContent">
 
-        </Container>
+                    <div className="InvoiceFormate">
 
-      </section>    
+                        <Grid container spacing={3}>
 
-    </> 
+                            {/* item */}
+                            <Grid item xs={4}>
 
                                 <div className="InvoiceFormateItem">
 
@@ -372,4 +370,4 @@ const DashboardSetting = () => {
 
 }
 
-export default DashboardSetting
+export default LandingWebsite
