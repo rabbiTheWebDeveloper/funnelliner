@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { BiReceipt } from "react-icons/bi";
 import Swal from "sweetalert2";
 import { baseTest } from "../../constant/constant";
+import { headers } from "../../pages/api";
 
 const ManualOrder = () => {
   
@@ -14,11 +15,11 @@ const ManualOrder = () => {
   const handleCloseSales = () => setOpenSales(false);
   const { register,handleSubmit,reset,formState: { errors }} = useForm();
 
-  const token = Cookies.get("token");
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // const token = Cookies.get("token");
+  // // console.log(token)
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  // };
   // const token = Cookies.get("token");
   // const tokens = Cookies.get("user");
   const data = Cookies.get();
@@ -37,7 +38,7 @@ const ManualOrder = () => {
     data.product_qty=[data.product_qty]
 
 
-    console.log(data);
+    // console.log(data);
 
     axios
     .post(baseTest+ "/client/orders", data, {

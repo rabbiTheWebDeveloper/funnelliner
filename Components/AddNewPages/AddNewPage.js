@@ -11,9 +11,11 @@ import Cookies from "js-cookie";
 import { baseTest } from '../../constant/constant';
 import Swal from 'sweetalert2';
 import { date } from 'yup';
+import { headers } from '../../pages/api';
 
 
 const AddNewPage = () => {
+  const [domain , setDomain] =useState("")
 
   // Tabs
   const [value, setValue] = useState('1');
@@ -21,16 +23,10 @@ const AddNewPage = () => {
   const {register,handleSubmit,reset,formState: { errors }} = useForm();
 
 
-  const token = Cookies.get("token");
- 
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
+  const domainSet = event => {
+    setDomain(event.target.value);
+    console.log(event.target.value)
   };
-  
-  const tokens = Cookies.get("user");
-  // const user =JSON.parse(Cookies.get("user"));
-  // console.log(JSON.parse(tokens))
 
   const data = Cookies.get();
   const mainData = data?.user;
@@ -41,14 +37,14 @@ const AddNewPage = () => {
   // console.log(parseData);
   const merchantId = parseData?.id;
   const merchantShopId = parseData?.shop_id ;
-console.log(merchantId ,merchantShopId)
+// console.log(merchantId ,merchantShopId)
 
 
   const addPageSubmit = (data) => {
     data.user_id=merchantId
     data.shop_id =merchantShopId
     data.status = "1"
-    console.log(data)
+    // console.log(data)
     axios.post(baseTest + "/client/pages", data, {
         headers: headers,
       })
@@ -59,17 +55,14 @@ console.log(merchantId ,merchantShopId)
         Swal.fire({
           icon: "error",
           title: "Oops...",
-
           footer: '<a href="">Why do I have this issue?</a>',
         });
       });
 
-
     reset();
   };
+  // console.log(domain)
   return (
-
-
 
     <>
 
@@ -85,7 +78,7 @@ console.log(merchantId ,merchantShopId)
 
                 {/* Left */}
                 <div className="Left d_flex">
-                
+
                 <div className="svg">
                   <MdProductionQuantityLimits/>
                 </div>
@@ -96,8 +89,8 @@ console.log(merchantId ,merchantShopId)
                   </div>
 
                 </div>
-                  
-              </div>   
+
+              </div>
 
             </Grid>
 
@@ -112,20 +105,23 @@ console.log(merchantId ,merchantShopId)
 
                     <div className="Item">
                       <label>Page Title</label>
-                      <TextField id="outlined-basic" label="Enter name here" variant="outlined"  {...register("title")} />
-                    </div>
-
-                    <div className="Item">
-                      <p>Page Link: <Link href=''>www.funnelliner.com/MyShopName/Page</Link></p>
-                    </div>
-
-                    <div className="Item">
-                      <label>Page Content</label>
-                      <TextField id="outlined-basic" label="Enter name here" variant="outlined"  {...register("page_content")} />
-                    </div>
-
-                    <div className="Item">
                       
+                      <TextField id="outlined-basic" label="Enter name here" variant="outlined"   {...register("title") }  />
+                    </div>
+
+                    <div className="Item">
+                      {/* <p>Page Link: <Link href=''>www.funnelliner.com/MyShopName/{domain}</Link></p> */}
+                      <p>Page Link: <Link href='MyShopName/domain'>www.funnelliner.com/MyShopName/domain</Link></p>
+                    </div>
+
+                    <div className="Item Multiline">
+                      <label>Page Content</label>
+                      {/* <TextField id="outlined-basic" label="Enter name here" multiline rows={4} variant="outlined"  {...register("page_content")} /> */}
+                      <TextField id="outlined-multiline-static" label="Enter name here" multiline rows={4} {...register("page_content")} />
+                    </div>
+
+                    <div className="Item">
+
                       <div className="SelectTheme">
 
                         <h5>Select Theme :</h5>
@@ -136,15 +132,15 @@ console.log(merchantId ,merchantShopId)
                           <Grid item xs={4}>
 
                             <label class="card">
-                    
+
                               <input name="plan" className="radio" type="radio"  {...register("theme")}  value="1" />
-                  
+
                               <span class="plan-details">
-                  
+
                                 <img src="images/landing3.png" alt="" />
-                  
+
                               </span>
-                                  
+
                             </label>
 
                           </Grid>
@@ -153,15 +149,15 @@ console.log(merchantId ,merchantShopId)
                           <Grid item xs={4}>
 
                             <label class="card">
-                    
+
                               <input name="plan" className="radio" type="radio" {...register("theme")}  value="2" />
-                  
+
                               <span class="plan-details">
-                  
+
                                 <img src="images/landing2.png" alt="" />
-                  
+
                               </span>
-                                  
+
                             </label>
 
                           </Grid>
@@ -170,15 +166,15 @@ console.log(merchantId ,merchantShopId)
                           <Grid item xs={4}>
 
                             <label class="card">
-                    
+
                               <input name="plan" className="radio" type="radio" {...register("theme")}  value="3" />
-                  
+
                               <span class="plan-details">
-                  
+
                                 <img src="images/landing1.png" alt="" />
-                  
+
                               </span>
-                                  
+
                             </label>
 
                           </Grid>
@@ -187,15 +183,15 @@ console.log(merchantId ,merchantShopId)
                           <Grid item xs={4}>
 
                             <label class="card">
-                    
+
                               <input name="plan" className="radio" type="radio" {...register("theme")}  value="4" />
-                  
+
                               <span class="plan-details">
-                  
+
                                 <img src="images/landing3.png" alt="" />
-                  
+
                               </span>
-                                  
+
                             </label>
 
                           </Grid>
@@ -204,15 +200,15 @@ console.log(merchantId ,merchantShopId)
                           <Grid item xs={4}>
 
                             <label class="card">
-                    
+
                               <input name="plan" className="radio" type="radio" {...register("theme")}  value="5" />
-                  
+
                               <span class="plan-details">
-                  
+
                                 <img src="images/landing2.png" alt="" />
-                  
+
                               </span>
-                                  
+
                             </label>
 
                           </Grid>
@@ -221,36 +217,36 @@ console.log(merchantId ,merchantShopId)
                           <Grid item xs={4}>
 
                             <label class="card">
-                    
+
                               <input name="plan" className="radio" type="radio" {...register("theme")}  value="6" />
-                  
+
                               <span class="plan-details">
-                  
+
                                 <img src="images/landing1.png" alt="" />
-                  
+
                               </span>
-                                  
+
                             </label>
 
                           </Grid>
 
 
                         </Grid>
-                       
+
                       </div>
 
                     </div>
 
                     <div className="Item">
-                      <Button type='submit' className='Update'>Update</Button>
+                      <Button type='submit' className='Update'>Save</Button>
                     </div>
 
                   </div>
                   </form>
 
                 </div>
-                  
-              </div>   
+
+              </div>
 
             </Grid>
 
@@ -259,7 +255,7 @@ console.log(merchantId ,merchantShopId)
 
         </Container>
 
-      </section>    
+      </section>
 
     </>
 
@@ -268,3 +264,5 @@ console.log(merchantId ,merchantShopId)
 }
 
 export default AddNewPage
+
+

@@ -10,26 +10,26 @@ import {
   MenuItem,
   Pagination,
   Select,
-  Stack,
-  Tab,
-  TextField,
+  Stack, TextField
 } from "@mui/material";
+import axios from "axios";
+import Cookies from "js-cookie";
+import moment from "moment";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BsSearch } from "react-icons/bs";
-import {
-  MdOutlineRemoveRedEye,
-  MdProductionQuantityLimits,
-} from "react-icons/md";
 import { AiFillCaretDown } from "react-icons/ai";
 import { BiPlus } from "react-icons/bi";
+import { BsSearch } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
+import {
+  MdOutlineRemoveRedEye,
+  MdProductionQuantityLimits
+} from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Cookies from "js-cookie";
-import axios from "axios";
-import { baseTest } from "../../constant/constant";
 import Swal from "sweetalert2";
-import moment from "moment";
+import { baseTest } from "../../constant/constant";
+import Skeleton from '@mui/material/Skeleton';
+import { headers } from "../../pages/api";
 
 const Product = () => {
   // Filter
@@ -66,10 +66,10 @@ const Product = () => {
   const [perPage, setPerPage] = useState(6);
   const [page, setPage] = useState(1);
 
-  const token = Cookies.get("token");
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // const token = Cookies.get("token");
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  // };
   useEffect(() => {
     axios
       .get(baseTest + "/client/products", { headers: headers })
@@ -251,9 +251,21 @@ const Product = () => {
                     </tr>
                   </thead>
                   {currentProduct.length === 0 ? (
-                    <div className="Preloader">
-                      <img src="sppiner.gif" />
-                    </div>
+                          <Box sx={{ width: 40 }}>
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          
+                        </Box>
                   ) : (
                     <tbody>
                       {currentProduct?.map((product) => {

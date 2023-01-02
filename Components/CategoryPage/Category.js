@@ -1,14 +1,16 @@
-import { TabContext, TabPanel, TabList } from '@mui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Button, Container, Grid, Tab, TextField } from '@mui/material';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { AiOutlineCamera } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
 import { MdProductionQuantityLimits } from 'react-icons/md';
-import { useForm } from 'react-hook-form';
-import Cookies from 'js-cookie';
-import { baseTest } from '../../constant/constant';
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import { baseTest } from '../../constant/constant';
+import { headers } from '../../pages/api';
 
 
 
@@ -21,6 +23,8 @@ const Category = () => {
   const [mainImg, setMainImg] = useState();
   const [img, setImg] = useState();
   const {register,handleSubmit,reset,formState: { errors }} = useForm();
+
+  const router = useRouter();
   const handleChangeTab = (event, newValue) => {
     setValue(newValue);
   };
@@ -31,11 +35,11 @@ const Category = () => {
   const handleOtherImages = (e) => {
     setImg(e.target.files[0]);
   };
-  const token = Cookies.get("token");
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // const token = Cookies.get("token");
+  // // console.log(token)
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  // };
   const onSubmit = (data) => {
     data.size = "XL";
     data.color = "white";
@@ -68,9 +72,10 @@ const Category = () => {
         // console.log(response.data.msg);
         // console.log(response.data);
         Swal.fire("Product  Add!", response.data.msg, "success");
+         router.push("/product");
       })
       .catch(function (error) {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -78,7 +83,7 @@ const Category = () => {
           footer: '<a href="">Why do I have this issue?</a>',
         });
       });
-    console.log(data);
+    // console.log(data);
 
     reset();
   };
@@ -91,7 +96,7 @@ const Category = () => {
   }, []);
   // console.log(category)
 
-  const handleSelect = (eventKey) => setTabSelect(eventKey);
+
 
 
   return (

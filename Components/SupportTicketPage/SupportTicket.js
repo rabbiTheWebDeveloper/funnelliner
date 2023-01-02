@@ -20,7 +20,7 @@ import { baseUrl} from "../../constant/constant";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
-import { handleGetSupportTicketList } from "../../pages/api";
+import { handleGetSupportTicketList, headers } from "../../pages/api";
 
 
 const SupportTicket = () => {
@@ -63,12 +63,12 @@ const SupportTicket = () => {
     const parseData = JSON.parse(localStorage.getItem("user"));
     setMerchant(parseData);
   });
-  const token = Cookies.get("token");
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "multipart/form-data",
-    "X-Requested-With": "XMLHttpRequest",
-  };
+  // const token = Cookies.get("token");
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  //   "Content-Type": "multipart/form-data",
+  //   "X-Requested-With": "XMLHttpRequest",
+  // };
   const {
     register,
     handleSubmit,
@@ -94,7 +94,7 @@ const SupportTicket = () => {
         Swal.fire("Ticket send success", response.data.msg, "success");
       })
       .catch(function (error) {
-        console.log("error", error);
+        // console.log("error", error);
         Swal.fire({
           icon: "error",
           title: "Oops...",

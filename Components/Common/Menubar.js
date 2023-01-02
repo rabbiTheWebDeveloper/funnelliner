@@ -1,15 +1,16 @@
-import { Button, Grid, ListItemIcon, Menu, MenuItem, TextField } from '@mui/material'
-import { Container } from '@mui/system'
-import React, { useEffect, useState } from 'react'
-import { BsSearch } from "react-icons/bs";
-import Link from 'next/link';
-import { BiSupport } from 'react-icons/bi';
-import { TbSettings } from 'react-icons/tb';
+import { Button, Grid, Menu, MenuItem, TextField } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
+import { Container } from '@mui/system';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { BiSupport } from 'react-icons/bi';
+import { BsSearch } from "react-icons/bs";
+import { TbSettings } from 'react-icons/tb';
 import { baseUrl } from '../../constant/constant';
+import { headers } from '../../pages/api';
 
 const Menubar = ({text}) => {
   const [token , setToken] =useState("")
@@ -27,12 +28,10 @@ const Menubar = ({text}) => {
   useEffect(() => {
     // Perform localStorage action
     let token = localStorage.getItem('token')
-    console.log(token)
+    // console.log(token)
     setToken(token)
   }, [])
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+
 
   const logout = () => {
     axios
@@ -43,7 +42,7 @@ const Menubar = ({text}) => {
           Cookies.remove('token')
           localStorage.clear('token')
           router.push('/login').then(r => {
-            console.log(r)
+            // console.log(r)
           })
         }
 

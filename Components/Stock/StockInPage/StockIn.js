@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Container, FormControl, Grid, InputLabel, Menu, MenuItem, Pagination, Select, Stack, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Container, FormControl, Grid, InputLabel, Menu, MenuItem, Pagination, Select, Skeleton, Stack, TextField } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -9,7 +9,9 @@ import { FiEdit } from 'react-icons/fi';
 import { MdOutlineInventory } from 'react-icons/md';
 import { RxUpdate } from 'react-icons/rx';
 import Swal from 'sweetalert2';
+import { headers } from '../../../pages/api';
 import { baseTest } from './../../../constant/constant';
+import UpdateStock from './UpdateStock';
 
 
 
@@ -57,13 +59,13 @@ const StockIn = () => {
     const [perPage, setPerPage] = useState(6);
     const [page, setPage] = useState(1);
   
-    const token = Cookies.get("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    // const token = Cookies.get("token");
+    // const headers = {
+    //   Authorization: `Bearer ${token}`,
+    // };
     useEffect(() => {
       axios
-        .get(baseTest + "/client/stocks/inventory/list", { headers: headers })
+        .get(baseTest + "/client/stocks/stock-in/list", { headers: headers })
         .then(function (response) {
           // handle success
           setProducts(response.data.data);
@@ -118,7 +120,7 @@ const StockIn = () => {
     const paginate = (pageNumber, value) => setCurrentPage(value);
   
   
-
+// console.log(currentProduct)
 
     return (
 
@@ -152,37 +154,6 @@ const StockIn = () => {
 
                                 {/* Right */}
                                 <div className="Right d_flex">
-
-                                    {/* item */}
-                                    <div className="FilterItem d_flex">
-
-                                        <h6>Filter By:</h6>
-
-                                        <div className="Dropdown">
-
-                                            <Box sx={{ minWidth: 120 }}>
-                                                <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">Price</InputLabel>
-                                                <Select
-                                                    labelId="demo-simple-select-label"
-                                                    id="demo-simple-select"
-                                                    value={age}
-                                                    label="Age"
-                                                    onChange={handleChange}
-                                                >
-                                                    <MenuItem value={10}>Price High-Low</MenuItem>
-                                                    <MenuItem value={20}>Yesterday</MenuItem>
-                                                    <MenuItem value={30}>Tomorrow</MenuItem>
-                                                    <MenuItem value={40}>This Weak</MenuItem>
-                                                    <MenuItem value={50}>Tish Month</MenuItem>
-                                                </Select>
-                                                </FormControl>
-                                            </Box>
-
-                                        </div>
-
-                                    </div>
-
                                     {/* item */}
                                     <div className="FilterItem">
 
@@ -198,28 +169,21 @@ const StockIn = () => {
                                 
                             </div>   
 
-                        </Grid>
+                       </Grid>
 
                     </Grid>
-
                     {/* DashboardSettingTabs */}
                     <div className="DashboardSettingTabs WebsiteSettingPage">
-
                         <div className="Pending">
-
                             <div className="MoveToComplete d_flex d_justify">
-
-                                <div className="DropDown">
-                                
+                                <div className="DropDown">                               
                                     <Button>
                                         <h6 className='d_flex'>
                                             Delete
                                             <div className="svg"><AiFillCaretDown/></div> 
                                         </h6>
                                     </Button>
-
                                 </div>
-
                                 <div className="DropDown Download">
                         
                                     <Button
@@ -247,9 +211,7 @@ const StockIn = () => {
                                         <MenuItem onClick={handleClose}>As Xml</MenuItem>
                                         <MenuItem onClick={handleClose}>As Doc File</MenuItem>
                                     </Menu>
-
                                 </div>
-
                             </div>
 
                             <div className="ProductTable">
@@ -257,7 +219,6 @@ const StockIn = () => {
                                 <table>
 
                                     <thead>
-
                                         <tr>
                                             <th><Checkbox/></th>
                                             <th>Image</th>
@@ -268,396 +229,51 @@ const StockIn = () => {
                                             <th>Quantity</th>
                                             <th>Action</th>
                                         </tr>
-
                                     </thead>
-
-                                    <tbody>
-
-                                        {/* item */}
-                                        <tr>
-                                            <td><Checkbox/></td>
-                                            <td>
-                                                <img src="images/img1.png" alt="" />
-                                            </td>
-                                            <td>2</td>
-                                            <td>Headphones</td>
-                                            <td>0123456</td>
-                                            <td>7529</td>
-                                            <td>300</td> 
-                                            <td className='EditViewDelete'>
-                                                <Button className='UpdateStock' onClick={handleOpenStock}>Update Stock </Button>
-
+                                    {currentProduct.length === 0 ? (
+                                    <Box sx={{ width: 40 }}>
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />                                   
+                                    </Box>
+                                 ) : (
+                                <tbody>
+                                {currentProduct?.map((product) => {
+                                    return (
+                                    <tr key={product.id}>
+                                        <td>
+                                        <Checkbox />
+                                        </td>
+                                        <td>
+                                        <img src={product.main_image.name} alt="" />
+                                        </td>
+                                        <td>{product?.id}</td>
+                                        <td>{product?.product_name}</td>
+                                        <td>{product.product_code}</td>
+                                        <td>{product.price}</td>
+                                        <td>{product.product_qty}</td>
+                                        <td className='EditViewDelete'>
+                                               
                                                 {/* Modal */}
-                                                <Modal
-                                                    open={openStock}
-                                                    onClose={handleStockClose}
-                                                    aria-labelledby="modal-modal-title"
-                                                    aria-describedby="modal-modal-description"
-                                                    >
-                                                    <Box>
-
-                                                        <div className="UpdateStockModal">
-
-                                                            {/* <div className="Close">
-                                                                <IoMdClose/>
-                                                            </div> */}
-
-                                                            <Grid Container spacing={3}>
-
-                                                                <Grid item xs={12}>
-
-                                                                    <div className="Header">
-
-                                                                        {/* Left */}
-                                                                        <div className="Left d_flex">
-                                                                        
-                                                                            <div className="svg">
-                                                                                <RxUpdate/>
-                                                                            </div>
-
-                                                                            <div className="text">
-                                                                                <h4>Update Stock</h4>
-                                                                                <p>Update Your Stock, Increase And Decrease Your Stock</p>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div className="UpdateStockModalContent ">
-
-                                                                            <div className="img d_flex">
-                                                                                <img src="images/img1.png" alt="" />
-                                                                                <h6>Headphones</h6>
-                                                                            </div>
-
-                                                                            <h4>Current Stock: <span>184</span> </h4>
-
-                                                                            <div className="CustomeInput">
-
-                                                                                <div className="Item">
-
-                                                                                    <label>Product Name</label>
-                                                                                    <TextField id="outlined-basic" label="Enter name here" variant="outlined" />
-                                                                                    
-                                                                                    <div className="svg">
-                                                                                    <FiEdit/>
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                                <p>Note for payment receive : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-                                                                                <div className="Item">
-                                                                                    <Button className='Update'>Update</Button>
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                        
-                                                                    </div>   
-
-                                                                </Grid>
-
-                                                            </Grid>
-
-                                                        </div>
-                                                        
-                                                    </Box>
-
-                                                </Modal>
-
+                                                <UpdateStock productId={product?.id}></UpdateStock>
+                                               
                                             </td>
-                                        </tr>
-
-                                        {/* item */}
-                                        <tr>
-                                            <td><Checkbox/></td>
-                                            <td>
-                                                <img src="images/img1.png" alt="" />
-                                            </td>
-                                            <td>2</td>
-                                            <td>Headphones</td>
-                                            <td>0123456</td>
-                                            <td>7529</td>
-                                            <td>300</td> 
-                                            <td className='EditViewDelete'>
-                                                <Button className='UpdateStock' onClick={handleOpenStock}>Update Stock </Button>
-
-                                                {/* Modal */}
-                                                <Modal
-                                                    open={openStock}
-                                                    onClose={handleStockClose}
-                                                    aria-labelledby="modal-modal-title"
-                                                    aria-describedby="modal-modal-description"
-                                                    >
-                                                    <Box>
-
-                                                        <div className="UpdateStockModal">
-
-                                                            {/* <div className="Close">
-                                                                <IoMdClose/>
-                                                            </div> */}
-
-                                                            <Grid Container spacing={3}>
-
-                                                                <Grid item xs={12}>
-
-                                                                    <div className="Header">
-
-                                                                        {/* Left */}
-                                                                        <div className="Left d_flex">
-                                                                        
-                                                                            <div className="svg">
-                                                                                <RxUpdate/>
-                                                                            </div>
-
-                                                                            <div className="text">
-                                                                                <h4>Update Stock</h4>
-                                                                                <p>Update Your Stock, Increase And Decrease Your Stock</p>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div className="UpdateStockModalContent ">
-
-                                                                            <div className="img d_flex">
-                                                                                <img src="images/img1.png" alt="" />
-                                                                                <h6>Headphones</h6>
-                                                                            </div>
-
-                                                                            <h4>Current Stock: <span>184</span> </h4>
-
-                                                                            <div className="CustomeInput">
-
-                                                                                <div className="Item">
-
-                                                                                    <label>Product Name</label>
-                                                                                    <TextField id="outlined-basic" label="Enter name here" variant="outlined" />
-                                                                                    
-                                                                                    <div className="svg">
-                                                                                    <FiEdit/>
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                                <p>Note for payment receive : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-                                                                                <div className="Item">
-                                                                                    <Button className='Update'>Update</Button>
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                        
-                                                                    </div>   
-
-                                                                </Grid>
-
-                                                            </Grid>
-
-                                                        </div>
-                                                        
-                                                    </Box>
-
-                                                </Modal>
-
-                                            </td>
-                                        </tr>
-
-                                        {/* item */}
-                                        <tr>
-                                            <td><Checkbox/></td>
-                                            <td>
-                                                <img src="images/img1.png" alt="" />
-                                            </td>
-                                            <td>2</td>
-                                            <td>Headphones</td>
-                                            <td>0123456</td>
-                                            <td>7529</td>
-                                            <td>300</td> 
-                                            <td className='EditViewDelete'>
-                                                <Button className='UpdateStock' onClick={handleOpenStock}>Update Stock </Button>
-
-                                                {/* Modal */}
-                                                <Modal
-                                                    open={openStock}
-                                                    onClose={handleStockClose}
-                                                    aria-labelledby="modal-modal-title"
-                                                    aria-describedby="modal-modal-description"
-                                                    >
-                                                    <Box>
-
-                                                        <div className="UpdateStockModal">
-
-                                                            {/* <div className="Close">
-                                                                <IoMdClose/>
-                                                            </div> */}
-
-                                                            <Grid Container spacing={3}>
-
-                                                                <Grid item xs={12}>
-
-                                                                    <div className="Header">
-
-                                                                        {/* Left */}
-                                                                        <div className="Left d_flex">
-                                                                        
-                                                                            <div className="svg">
-                                                                                <RxUpdate/>
-                                                                            </div>
-
-                                                                            <div className="text">
-                                                                                <h4>Update Stock</h4>
-                                                                                <p>Update Your Stock, Increase And Decrease Your Stock</p>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div className="UpdateStockModalContent ">
-
-                                                                            <div className="img d_flex">
-                                                                                <img src="images/img1.png" alt="" />
-                                                                                <h6>Headphones</h6>
-                                                                            </div>
-
-                                                                            <h4>Current Stock: <span>184</span> </h4>
-
-                                                                            <div className="CustomeInput">
-
-                                                                                <div className="Item">
-
-                                                                                    <label>Product Name</label>
-                                                                                    <TextField id="outlined-basic" label="Enter name here" variant="outlined" />
-                                                                                    
-                                                                                    <div className="svg">
-                                                                                    <FiEdit/>
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                                <p>Note for payment receive : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-                                                                                <div className="Item">
-                                                                                    <Button className='Update'>Update</Button>
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                        
-                                                                    </div>   
-
-                                                                </Grid>
-
-                                                            </Grid>
-
-                                                        </div>
-                                                        
-                                                    </Box>
-
-                                                </Modal>
-
-                                            </td>
-                                        </tr>
-
-                                        {/* item */}
-                                        <tr>
-                                            <td><Checkbox/></td>
-                                            <td>
-                                                <img src="images/img1.png" alt="" />
-                                            </td>
-                                            <td>2</td>
-                                            <td>Headphones</td>
-                                            <td>0123456</td>
-                                            <td>7529</td>
-                                            <td>300</td> 
-                                            <td className='EditViewDelete'>
-                                                <Button className='UpdateStock' onClick={handleOpenStock}>Update Stock </Button>
-
-                                                {/* Modal */}
-                                                <Modal
-                                                    open={openStock}
-                                                    onClose={handleStockClose}
-                                                    aria-labelledby="modal-modal-title"
-                                                    aria-describedby="modal-modal-description"
-                                                    >
-                                                    <Box>
-
-                                                        <div className="UpdateStockModal">
-
-                                                            {/* <div className="Close">
-                                                                <IoMdClose/>
-                                                            </div> */}
-
-                                                            <Grid Container spacing={3}>
-
-                                                                <Grid item xs={12}>
-
-                                                                    <div className="Header">
-
-                                                                        {/* Left */}
-                                                                        <div className="Left d_flex">
-                                                                        
-                                                                            <div className="svg">
-                                                                                <RxUpdate/>
-                                                                            </div>
-
-                                                                            <div className="text">
-                                                                                <h4>Update Stock</h4>
-                                                                                <p>Update Your Stock, Increase And Decrease Your Stock</p>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div className="UpdateStockModalContent ">
-
-                                                                            <div className="img d_flex">
-                                                                                <img src="images/img1.png" alt="" />
-                                                                                <h6>Headphones</h6>
-                                                                            </div>
-
-                                                                            <h4>Current Stock: <span>184</span> </h4>
-
-                                                                            <div className="CustomeInput">
-
-                                                                                <div className="Item">
-
-                                                                                    <label>Product Name</label>
-                                                                                    <TextField id="outlined-basic" label="Enter name here" variant="outlined" />
-                                                                                    
-                                                                                    <div className="svg">
-                                                                                    <FiEdit/>
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                                <p>Note for payment receive : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-                                                                                <div className="Item">
-                                                                                    <Button className='Update'>Update</Button>
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                        
-                                                                    </div>   
-
-                                                                </Grid>
-
-                                                            </Grid>
-
-                                                        </div>
-                                                        
-                                                    </Box>
-
-                                                </Modal>
-
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
+                                    </tr>
+                                    );
+                                })}
+                    </tbody>
+                  )}
+
+                                   
 
                                 </table>
 

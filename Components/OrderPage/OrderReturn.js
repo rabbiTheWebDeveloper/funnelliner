@@ -1,22 +1,18 @@
 import {
     Box,
     Button,
-    Checkbox,
-    CircularProgress,
-    Menu,
-    MenuItem,
-    Pagination,
-    Stack,
-  } from "@mui/material";
-  import axios from "axios";
-  import Cookies from "js-cookie";
-  import moment from "moment";
-  import { useEffect, useState } from "react";
-  import { AiFillCaretDown } from "react-icons/ai";
-  import { FiDownloadCloud } from "react-icons/fi";
-  import { baseTest, baseUrl } from "../../constant/constant";
-  import Select from "react-select";
-  import Swal from "sweetalert2";
+    Checkbox, Menu,
+    MenuItem
+} from "@mui/material";
+import Skeleton from '@mui/material/Skeleton';
+import axios from "axios";
+import Cookies from "js-cookie";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { AiFillCaretDown } from "react-icons/ai";
+import Select from "react-select";
+import Swal from "sweetalert2";
+import { baseTest, baseUrl } from "../../constant/constant";
   const options = [
     // { value: "Cancelled", label: "Cancelled", id: 2 },
     // { value: "Shipped", label: "Shipped", id: 3 },
@@ -79,7 +75,7 @@ const OrderReturn = ({ ...props }) => {
   
     useEffect(() => {
       axios
-        .get(baseUrl + "/client/orders", { headers })
+        .get(baseUrl + "/client/orders", {  headers: headers  })
         .then(function (response) {
           // handle success
           let allProduct = response.data.data;
@@ -187,9 +183,22 @@ const OrderReturn = ({ ...props }) => {
 
             {
                 currentProduct.length ===0 ?
-                <div className="Preloader">
-                    <img src="sppiner.gif" />
-                </div>:
+                <Box sx={{ width: 40 }}>
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                
+              </Box>
+                :
               <tbody>
               {currentProduct?.map((product) => {
                 return (

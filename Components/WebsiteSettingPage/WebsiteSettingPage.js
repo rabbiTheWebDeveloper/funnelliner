@@ -19,21 +19,23 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlineCamera, AiOutlineSetting } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import {
-  getWebsiteSettings,
+  getWebsiteSettings, headers,
 } from "../../pages/api";
 import Swal from "sweetalert2";
 import { baseUrl } from "../../constant/constant";
 
 import axios from "axios";
 import Cookies from "js-cookie";
-
+import {shopId} from "../../pages/api/index"
 const WebsiteSettingPage = () => {
-  const token = Cookies.get("token");
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "multipart/form-data",
-    "X-Requested-With": "XMLHttpRequest",
-  };
+  // const token = Cookies.get("token");
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  //   "Content-Type": "multipart/form-data",
+  //   "X-Requested-With": "XMLHttpRequest",
+
+  // };
+
 
   // Tabs
   const [value, setValue] = useState("1");
@@ -589,10 +591,15 @@ const WebsiteSettingPage = () => {
                                 <div className='Item'>
                                   <label>Shop ID</label>
                                   <TextField
+                                  InputProps={{readOnly: true}}
                                     {...register("shopID")}
                                     id='outlined-basic'
+                                    // defaultValue={
+                                    //   websiteSettingsData?.website_shop_id
+                                    // }
+                                    readonly
                                     defaultValue={
-                                      websiteSettingsData?.website_shop_id
+                                      shopId
                                     }
 
                                     variant='outlined'

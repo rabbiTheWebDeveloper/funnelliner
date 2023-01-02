@@ -1,6 +1,7 @@
-import { Box, Button, Checkbox, Container, FormControl, Grid, InputLabel, Menu, MenuItem, Pagination, Select, Stack, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Container, FormControl, Grid, InputLabel, Menu, MenuItem, Pagination, Select, Skeleton, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { AiFillCaretDown } from 'react-icons/ai';
@@ -8,6 +9,7 @@ import { BsSearch } from 'react-icons/bs';
 import { FiEdit } from 'react-icons/fi';
 import { MdOutlineInventory } from 'react-icons/md';
 import Swal from 'sweetalert2';
+import { headers } from '../../../pages/api';
 import { baseTest } from './../../../constant/constant';
 
 
@@ -50,10 +52,10 @@ const Inventory = () => {
   const [perPage, setPerPage] = useState(6);
   const [page, setPage] = useState(1);
 
-  const token = Cookies.get("token");
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+//   const token = Cookies.get("token");
+//   const headers = {
+//     Authorization: `Bearer ${token}`,
+//   };
   useEffect(() => {
     axios
       .get(baseTest + "/client/stocks/inventory/list", { headers: headers })
@@ -110,7 +112,7 @@ const Inventory = () => {
 
   const paginate = (pageNumber, value) => setCurrentPage(value);
 
-
+ console.log(currentProduct)
     return (
 
 
@@ -143,37 +145,6 @@ const Inventory = () => {
 
                                 {/* Right */}
                                 <div className="Right d_flex">
-
-                                    {/* item */}
-                                    <div className="FilterItem d_flex">
-
-                                        <h6>Filter By:</h6>
-
-                                        <div className="Dropdown">
-
-                                            <Box sx={{ minWidth: 120 }}>
-                                                <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">Price</InputLabel>
-                                                <Select
-                                                    labelId="demo-simple-select-label"
-                                                    id="demo-simple-select"
-                                                    value={age}
-                                                    label="Age"
-                                                    onChange={handleChange}
-                                                >
-                                                    <MenuItem value={10}>Price High-Low</MenuItem>
-                                                    <MenuItem value={20}>Yesterday</MenuItem>
-                                                    <MenuItem value={30}>Tomorrow</MenuItem>
-                                                    <MenuItem value={40}>This Weak</MenuItem>
-                                                    <MenuItem value={50}>Tish Month</MenuItem>
-                                                </Select>
-                                                </FormControl>
-                                            </Box>
-
-                                        </div>
-
-                                    </div>
-
                                     {/* item */}
                                     <div className="FilterItem">
 
@@ -262,10 +233,53 @@ const Inventory = () => {
 
                                             </thead>
 
-                                            <tbody>
+                                         
+
+                                             
+                                {currentProduct.length === 0 ? (
+                                    <Box sx={{ width: 40 }}>
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    <Skeleton     width={1570} height={28} />
+                                    
+                                    </Box>
+                            ) : (
+                                <tbody>
+                                {currentProduct?.map((product) => {
+                                    return (
+                                    <tr key={product.id}>
+                                        <td>
+                                        <Checkbox />
+                                        </td>
+                                        <td>
+                                        <img src={product.main_image.name} alt="" />
+                                        </td>
+                                        <td>{product?.id}</td>
+                                        <td>{product?.product_name}</td>
+                                        <td>{product.product_code}</td>
+                                        <td>{product.price}</td>
+                                        <td>{product.product_qty}</td>
+                                        <td className='EditViewDelete'>
+                                                                    <Link href=''> <FiEdit/> </Link>
+                                                                </td>
+                                    
+                                    </tr>
+                                    );
+                                })}
+                    </tbody>
+                  )}
 
                                                 {/* item */}
-                                                <tr>
+                                                {/* <tr>
                                                     <td><Checkbox/></td>
                                                     <td>
                                                         <img src="images/img1.png" alt="" />
@@ -278,57 +292,9 @@ const Inventory = () => {
                                                     <td className='EditViewDelete'>
                                                         <Link href=''> <FiEdit/> </Link>
                                                     </td>
-                                                </tr>
+                                                </tr> */}
 
-                                                {/* item */}
-                                                <tr>
-                                                    <td><Checkbox/></td>
-                                                    <td>
-                                                        <img src="images/img1.png" alt="" />
-                                                    </td>
-                                                    <td>2</td>
-                                                    <td>Headphones</td>
-                                                    <td>0123456</td>
-                                                    <td>7529</td>
-                                                    <td>300</td> 
-                                                    <td className='EditViewDelete'>
-                                                        <Link href=''> <FiEdit/> </Link>
-                                                    </td>
-                                                </tr>
-
-                                                {/* item */}
-                                                <tr>
-                                                    <td><Checkbox/></td>
-                                                    <td>
-                                                        <img src="images/img1.png" alt="" />
-                                                    </td>
-                                                    <td>2</td>
-                                                    <td>Headphones</td>
-                                                    <td>0123456</td>
-                                                    <td>7529</td>
-                                                    <td>300</td> 
-                                                    <td className='EditViewDelete'>
-                                                        <Link href=''> <FiEdit/> </Link>
-                                                    </td>
-                                                </tr>
-
-                                                {/* item */}
-                                                <tr>
-                                                    <td><Checkbox/></td>
-                                                    <td>
-                                                        <img src="images/img1.png" alt="" />
-                                                    </td>
-                                                    <td>2</td>
-                                                    <td>Headphones</td>
-                                                    <td>0123456</td>
-                                                    <td>7529</td>
-                                                    <td>300</td> 
-                                                    <td className='EditViewDelete'>
-                                                        <Link href=''> <FiEdit/> </Link>
-                                                    </td>
-                                                </tr>
-
-                                            </tbody>
+                                        
 
                                         </table>
 

@@ -1,17 +1,5 @@
 import { TabContext, TabPanel, TabList } from "@mui/lab";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  Tab,
-  TextField,
-} from "@mui/material";
+import {Box,Button,Container,FormControl,Grid,IconButton,InputLabel,MenuItem,Select,Tab,TextField} from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
@@ -20,6 +8,7 @@ import { AiOutlineCamera, AiOutlineSetting } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { baseLocal, baseUrl } from "../../constant/constant";
+import { headers } from "../../pages/api";
 import BussnessInfo from "./BussnessInfo";
 
 const DashboardSetting = () => {
@@ -40,11 +29,11 @@ const DashboardSetting = () => {
   };
 
   // comment token
-  const token = Cookies.get("token");
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // const token = Cookies.get("token");
+  // // console.log(token)
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  // };
 
   // .common shop and user name
   useEffect(() => {
@@ -79,8 +68,7 @@ const DashboardSetting = () => {
   };
   //  own information get
   useEffect(() => {
-    axios
-      .get(baseLocal + "/client/settings/owner-info", { headers: headers })
+    axios.get(baseLocal + "/client/settings/owner-info", { headers: headers })
       .then(function (response) {
         // handle success
         let target = response.data.data;
@@ -92,10 +80,7 @@ const DashboardSetting = () => {
 
   // password reset
   const passwordSubmit = (data) => {
-    axios
-      .post(baseUrl + "/client/settings/password-security/update", data, {
-        headers: headers,
-      })
+    axios.post(baseUrl + "/client/settings/password-security/update", data, {headers: headers})
       .then(function (response) {
         Swal.fire(response.data.msg, response.data.msg, "success");
       })

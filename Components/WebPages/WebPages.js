@@ -15,6 +15,8 @@ import { baseTest } from '../../constant/constant';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 import moment from "moment";
+import { useRouter } from 'next/router';
+import { shopId } from '../../pages/api';
 
 
 
@@ -33,7 +35,7 @@ const WebPages = () => {
     const handleChangeTab = (event, newValue) => {
         setValue(newValue);
     };
-  
+
     // handleClick Move To Completed
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -59,14 +61,17 @@ const WebPages = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(6);
     const [page, setPage] = useState(1);
-  
+
     const token = Cookies.get("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      shop_id : shopId,
     };
 
 
-
+    const router = useRouter()
+    // const { pid } = router.query
+    // console.log(router)
 
 
     useEffect(() => {
@@ -77,8 +82,48 @@ const WebPages = () => {
             setProducts(response.data.data);
           });
       }, []);
+
+
+    //   status create
+    const data = Cookies.get();
+    const mainData = data?.user;
+    let parseData;
+    if (mainData != null) {
+      parseData = JSON.parse(mainData);
+    }
+    // console.log(parseData);
+    const merchantId = parseData?.id;
+    const merchantShopId = parseData?.shop_id
+    const updateDate ={
+        user_id: merchantId,
+        shop_id : merchantShopId
+
+    }
+
+    const addPageSubmit = (data) => {
+
+        data.status = "0"
+        // console.log(data)
+        axios.post(baseTest + `/client/pages?id=${merchantId}&status=0&title=${product.title}&theme=${ id}&slug=hello2`,  {
+            headers: headers,
+          })
+          .then(function (response) {
+            Swal.fire("Own Info Add!", response.data.msg, "success");
+          })
+          .catch(function (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+
+              footer: '<a href="">Why do I have this issue?</a>',
+            });
+          });
+
+
+        reset();
+      };
       // console.log(products);
-    
+
       const deleteProduct = (id) => {
         Swal.fire({
           title: "Are you sure?",
@@ -91,10 +136,9 @@ const WebPages = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             axios
-              .delete(baseTest + "/client/products/" + id, { headers: headers })
+              .delete(baseTest + "/client/pages/" + id, { headers: headers })
               .then(function (result) {
                 // handle success
-    
                 if (result) {
                   setProducts((pd) => {
                     const filter = products.filter((prod) => {
@@ -109,22 +153,22 @@ const WebPages = () => {
           }
         });
       };
-    
+
       const indexOfLastProducts = currentPage * perPage;
       const indexOfFirstProducts = indexOfLastProducts - perPage;
       const currentProduct = products.slice(
         indexOfFirstProducts,
         indexOfLastProducts
       );
-    
+
       const pageNumbers = [];
       for (let i = 1; i <= Math.ceil(products.length / perPage); i++) {
         pageNumbers.push(i);
       }
-      // console.log(pageNumbers);
-    
+
+
       const paginate = (pageNumber, value) => setCurrentPage(value);
-    
+
 
 
 
@@ -147,14 +191,14 @@ const WebPages = () => {
 
                                 {/* Left */}
                                 <div className="Left d_flex">
-                                
+
                                     <div className="svg">
                                         <MdOutlineReceiptLong/>
                                     </div>
 
                                     <div className="text">
-                                    <h4>Orders</h4>
-                                    <p>Order List</p>
+                                    <h4>Pages</h4>
+                                    <p>Pages List</p>
                                     </div>
 
                                 </div>
@@ -174,8 +218,8 @@ const WebPages = () => {
 
                                 </div>
 
-                                
-                            </div>   
+
+                            </div>
 
                         </Grid>
 
@@ -189,7 +233,7 @@ const WebPages = () => {
                         <TabContext value={value}>
 
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                
+
                                 <div className="WebPages d_flex d_justify">
 
                                     <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
@@ -234,9 +278,9 @@ const WebPages = () => {
                                                         <td>{moment(product.created_at).fromNow()}</td>
                                                         <td className='EditViewDelete'> <Button className={product.status===1 ? "UpdateStock" : "Unpublished"}>Published</Button></td>
                                                         <td className='EditViewDelete'>
-                                                            <Link href=''> <MdOutlineRemoveRedEye/> </Link>
-                                                            <Link href=''> <FiEdit/> </Link>
-                                                            <Link href=''> <RiDeleteBin6Line/> </Link>
+                                                            <Link href={"/evely/"+ product.slug}> <MdOutlineRemoveRedEye/> </Link>
+                                                            {/* <Link href=''> <FiEdit/> </Link> */}
+                                                            <Link href='' onClick={() =>deleteProduct(product.id)}> <RiDeleteBin6Line/> </Link>
                                                         </td>
                                                     </tr>
 
@@ -260,14 +304,14 @@ const WebPages = () => {
                                                     )
                                                 })} */}
 
-                                              
+
 
                                             </tbody>
 
                                         </table>
 
                                     </div>
-                                    
+
                                 </div>
 
                             </TabPanel>
@@ -304,19 +348,19 @@ const WebPages = () => {
                                                             <td className='EditViewDelete'>
                                                                 <Link href=''> <MdOutlineRemoveRedEye/> </Link>
                                                                 <Link href=''> <FiEdit/> </Link>
-                                                                <Link href=''> <RiDeleteBin6Line/> </Link>
+                                                                <Link href='' onClick={() =>deleteProduct(product.id)}> <RiDeleteBin6Line/> </Link>
                                                             </td>
                                                         </tr>
                                                         )
                                                     }
                                             })}
-                                               
 
 
-                                                
+
+
 
                                                 {/* item */}
-                                               
+
 
                                             </tbody>
 
@@ -329,7 +373,7 @@ const WebPages = () => {
                             </TabPanel>
 
                         </TabContext>
-                        
+
                         </Box>
 
                     </div>

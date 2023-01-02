@@ -1,22 +1,25 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useRouter } from 'next/router';
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { baseTest } from "../../constant/constant";
+import { headers } from "../../pages/api";
 
 
 const AddCategory = () => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     const {register,handleSubmit,reset,formState: { errors }} = useForm();
+    const router = useRouter();
 
-    const token =Cookies.get('token')
-    // console.log(token)
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    // const token =Cookies.get('token')
+    // // console.log(token)
+    // const headers = {
+    //   Authorization: `Bearer ${token}`,
+    // };
 
     const onCategorySubmit = (data) => {
         data.parent_id = "";
@@ -29,7 +32,7 @@ const AddCategory = () => {
         formData.append('description',data.description);
         formData.append('parent_id',data.parent_id );
         formData.append('status', data.status);
-        console.log(formData);
+        // console.log(formData);
     
         axios.post(baseTest + "/client/categories", formData ,{headers: headers}
          )
@@ -40,6 +43,8 @@ const AddCategory = () => {
               response.data.msg,
               'success'
             )
+
+            router.push("/sub-product");
           })
           .catch(function (error) {
             // console.log(error);
@@ -50,7 +55,7 @@ const AddCategory = () => {
               footer: '<a href="">Why do I have this issue?</a>'
             })
           });
-        console.log(data);
+        // console.log(data);
     
         reset();
       };
@@ -72,8 +77,8 @@ const AddCategory = () => {
     return (
         <div className="DashboardTabsItem">
 
-        <h4>Update Product Information</h4>
-        <p>Update your product info</p>
+        <h4>Update Category Information</h4>
+        <p>Update your Category info</p>
 
         <div className="DashboardForm">
 
@@ -87,7 +92,7 @@ const AddCategory = () => {
                 <div className="left">
 
                   <h5>Category</h5>
-                  <p>This will be displayed on your product page</p>
+                  <p>This will be displayed on your Category page</p>
 
                 </div>
 

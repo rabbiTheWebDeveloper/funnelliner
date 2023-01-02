@@ -1,17 +1,19 @@
 
-import { Box, Button, Checkbox, Container, FormControl, Grid, InputLabel, ListItemIcon, Menu, MenuItem, Pagination, Stack } from '@mui/material'
+import { Box, Button, Checkbox, Container, Grid, Menu, MenuItem, Pagination, Stack } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { MdOutlineRemoveRedEye, MdProductionQuantityLimits } from 'react-icons/md';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { BiPlus } from 'react-icons/bi';
 import { FiEdit } from 'react-icons/fi';
+import { MdOutlineRemoveRedEye, MdProductionQuantityLimits } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import Cookies from 'js-cookie';
-import { baseUrl } from '../../constant/constant';
 import Swal from 'sweetalert2';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import { baseUrl } from '../../constant/constant';
+import { headers } from '../../pages/api';
 
 
 
@@ -38,27 +40,18 @@ const SubProduct = () => {
         setAnchorEl(null);
     };
 
-    // handleConfirmed
-    // const [anchorEl2, setAnchorEl2] = useState(null);
-    // const open2 = Boolean(anchorEl2);
-    // const handleConfirmed = (event) => {
-    //     setAnchorEl2(event.currentTarget);
-    // };
-    // const handleCloseConfirmed = () => {
-    //     setAnchorEl2(null);
-    // };
-
+   
 
    
 
   
   
   
-    const token =Cookies.get('token')
+    // const token =Cookies.get('token')
    
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${token}`,
+    // };
     useEffect(() => {
       axios.get(baseUrl + "/client/categories", { headers: headers })
         .then(function (response) {
@@ -95,7 +88,7 @@ const SubProduct = () => {
                 return [...filter];
               });
               // props.history.push("/category")
-              router.push("/category");
+              // router.push("/category");
             } else {
   
             }
@@ -217,6 +210,23 @@ const SubProduct = () => {
                                                 </tr>
 
                                             </thead>
+                                            {currentProduct.length === 0 ? (
+                          <Box sx={{ width: 40 }}>
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          <Skeleton     width={1570} height={28} />
+                          
+                        </Box>
+                  ) : (
 
                                             <tbody>
                                             {currentProduct?.map((product) => {
@@ -252,7 +262,7 @@ const SubProduct = () => {
                                                
 
                                             </tbody>
-
+                  )}
                                         </table>
 
                                     </div>

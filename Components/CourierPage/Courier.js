@@ -1,17 +1,5 @@
 import { TabContext, TabPanel, TabList } from "@mui/lab";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  Tab,
-  TextField,
-} from "@mui/material";
+import {Box,Button,Container,FormControl,Grid,IconButton,InputLabel,MenuItem,Select,Tab,TextField,} from "@mui/material";
 import React, { useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 import Switch from "@mui/material/Switch";
@@ -41,12 +29,7 @@ const Courier = () => {
   const merchantId = parseData?.id;
 
   //steadfast courier
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const {register,handleSubmit,watch,formState: { errors }} = useForm();
 
   const handleSteadfastSubmit = (data) => {
     const config = {
@@ -65,7 +48,7 @@ const Courier = () => {
 
   //redx
   const handleRedxSubmit = (data) => {
-    console.log(data.redxApiKey, data.redxApiSecret);
+    // console.log(data.redxApiKey, data.redxApiSecret);
     const config = {
       "Api-Key": data.redxApiKey,
       "Secret-Key": data.redxApiSecret,

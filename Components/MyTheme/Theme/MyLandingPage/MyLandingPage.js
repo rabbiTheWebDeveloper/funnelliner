@@ -15,50 +15,31 @@ import {
 import React, { useEffect, useState } from "react";
 import { BsCodeSlash } from "react-icons/bs";
 import Modal from "@mui/material/Modal";
-import Swal from "sweetalert2";
-import { allThemeList, importTheme } from "../../../pages/api";
-import { mainBaseUrl } from "../../../pages/api/index";
+import { BiLinkAlt } from "react-icons/bi";
+import Link from "next/link";
+import { FiEdit } from "react-icons/fi";
+import { merchantLandingThemeList } from "../../../../pages/api";
 
-const MultiWebsite = () => {
+const MyLandingPage = () => {
   // ViewPreviewModel
   const [openPreview, setOpenPreview] = useState(false);
   const handlePreview = () => setOpenPreview(true);
   const previewClose = () => setOpenPreview(false);
 
+  // OpenSales Modal
+  // const [openSales, setOpenSales] = useState(false);
+  // const handleOpenSales = () => setOpenSales(true);
+  // const handleCloseSales = () => setOpenSales(false);
+
   const [multiPageTemplate, setMultiPageTemplate] = useState([]);
   useEffect(() => {
-    allThemeList("multiple").then((result) => {
+    merchantLandingThemeList("landing").then((result) => {
       setMultiPageTemplate(result?.data?.data);
+      console.log(result?.data?.data);
     });
   }, []);
+  console.log(multiPageTemplate);
 
-  const handleActiveTheme = (e) => {
-    Swal.fire({
-      title: 'Are you sure to active this theme?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, import it'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const themeId = e.target.id;
-        importTheme("multiple", themeId).then((res) => {
-          if (res.status === 200) {
-            Swal.fire("Setting", `Theme active success ${themeId}`);
-          } else {
-            Swal.fire({
-              title: "Error!",
-              text: "Something went wrong",
-              icon: "error",
-              confirmButtonText: "ok",
-            });
-          }
-        });
-
-      }
-    })
-  };
   return (
     <>
       <section className='TopSellingProducts DashboardSetting LandingWebsite'>
@@ -73,7 +54,7 @@ const MultiWebsite = () => {
                   </div>
 
                   <div className='text'>
-                    <h4>Multiple Page Website</h4>
+                    <h4> My Landing Template</h4>
                     <p>choose your theme here and customize as you want</p>
                   </div>
                 </div>
@@ -91,8 +72,8 @@ const MultiWebsite = () => {
                           <div className='img'>
                             <img src={item.media.name} alt='' />
                           </div>
-                          <div className='DuelButton d_flex d_justify'>
-                            <div className='left'>
+                          <div className='DuelButton '>
+                            <div className=''>
                               <Button onClick={handlePreview}>
                                 View Preview
                               </Button>
@@ -109,12 +90,6 @@ const MultiWebsite = () => {
                                 </Box>
                               </Modal>
                             </div>
-
-                            <div className='right'>
-                              <Button onClick={handleActiveTheme} Id={item.id}>
-                                Import Theme
-                              </Button>
-                            </div>
                           </div>
                         </div>
                       </Grid>
@@ -130,4 +105,4 @@ const MultiWebsite = () => {
   );
 };
 
-export default MultiWebsite;
+export default MyLandingPage;

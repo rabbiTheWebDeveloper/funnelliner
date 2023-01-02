@@ -8,6 +8,7 @@ import Sidebar from '../../Components/Common/Sidebar';
 import Menubar from '../../Components/Common/Menubar';
 import DashboardSetting from '../../Components/DashboardSettingPage/DashboardSetting';
 import Courier from '../../Components/CourierPage/Courier';
+import withAuth from '../../hook/PrivateRoute';
 
 
 
@@ -31,4 +32,6 @@ const index = () => {
 
 }
 
-export default index
+export default withAuth(index, {
+  isProtectedRoute: true
+});

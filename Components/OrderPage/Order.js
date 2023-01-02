@@ -1,51 +1,31 @@
-import { TabContext, TabPanel, TabList } from "@mui/lab";
-import {Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControl,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Pagination,
-  Stack,
-  Tab,
-  TextField,
-} from "@mui/material";
-import Link from "next/link";
-import { useEffect, useId, useState } from "react";
-import { BsCodeSlash, BsSearch } from "react-icons/bs";
-import { MdOutlineReceiptLong } from "react-icons/md";
-import { BsGraphUp } from "react-icons/bs";
-import Modal from "@mui/material/Modal";
-import { FiDownloadCloud, FiEdit } from "react-icons/fi";
-import { AiFillCaretDown } from "react-icons/ai";
-import { baseTest, baseUrl } from "../../constant/constant";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { Box, Button, Checkbox, Container, Grid, Menu, MenuItem, Pagination, Stack, Tab, TextField } from "@mui/material";
+import Skeleton from '@mui/material/Skeleton';
 import axios from "axios";
 import Cookies from "js-cookie";
 import moment from "moment/moment";
-import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
+import { AiFillCaretDown } from "react-icons/ai";
+import { BsSearch } from "react-icons/bs";
+import { MdOutlineReceiptLong } from "react-icons/md";
 import Select from "react-select";
-import ConfirmedOrder from "./ConfirmedOrder";
-import { Cancel } from "@mui/icons-material";
+import Swal from "sweetalert2";
+import { baseTest, baseUrl } from "../../constant/constant";
+import { headers, shopId } from "../../pages/api";
 import CancelledOrder from "./CancelledOrder";
-import ShippedOrder from "./ShippedOrder";
+import ConfirmedOrder from "./ConfirmedOrder";
 import DelivereOrder from "./DelivereOrder";
 import FollowUpOrder from "./FollowUpOrder";
-import OrderReturn from "./OrderReturn";
-import { BiReceipt } from "react-icons/bi";
 import ManualOrder from "./ManualOrder";
+import OrderReturn from "./OrderReturn";
+import ShippedOrder from "./ShippedOrder";
 const options = [
   { value: "pending", label: "pending", id: 1 },
   { value: "Confirmed", label: "Confirmed", id: 1 },
   { value: "Cancelled", label: "Cancelled", id: 2 },
-  { value: "Shipped", label: "Shipped", id: 3 },
-  { value: "Delivered", label: "Delivered", id: 4 },
-  { value: "Order Return", label: "Order Return", id: 5 },
+  // { value: "Shipped", label: "Shipped", id: 3 },
+  // { value: "Delivered", label: "Delivered", id: 4 },
+  // { value: "Order Return", label: "Order Return", id: 5 },
   { value: "Follow Up", label: "Follow Up", id: 6 },
 ];
 
@@ -56,7 +36,7 @@ const Order = ({ ...props }) => {
   const [page, setPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
 
-  console.log(selectedOption);
+  // console.log(selectedOption);
 
   // Filter
   const [age, setAge] = useState([]);
@@ -99,16 +79,17 @@ const Order = ({ ...props }) => {
 
   // oder full function
 
-  // comment token
-  const token = Cookies.get("token");
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // // comment token
+  // const token = Cookies.get("token");
+  // // console.log(token)
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  //   shop_id : shopId,
+  // };
 
   useEffect(() => {
     axios
-      .get(baseUrl + "/client/orders", { headers })
+      .get(baseUrl + "/client/orders", { headers: headers  })
       .then(function (response) {
         // handle success
         let allProduct = response.data.data;
@@ -128,12 +109,12 @@ const Order = ({ ...props }) => {
   //   status :"confirm"
   // };
   const statusSubmit = (id) => {
-    console.log(id);
+    // console.log(id);
     let status = {
       order_id: id,
       status: selectedOption.value,
     };
-    console.log(status);
+    // console.log(status);
 
     axios
       .post(baseTest + "/client/orders/status/update", status, {
@@ -181,7 +162,7 @@ const Order = ({ ...props }) => {
                 return [...filter];
               });
               // props.history.push("/category")
-              router.push("/category");
+              // router.push("/category");
             } else {
               // cogoToast.error("Request Fail Try Again");
             }
@@ -205,6 +186,7 @@ const Order = ({ ...props }) => {
   // console.log(pageNumbers);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  console.log(products)
 
   return (
     <>
@@ -352,9 +334,21 @@ const Order = ({ ...props }) => {
                         </thead>
 
                         {currentProduct.length === 0 ? (
-                          <div className="Preloader">
-                            <img src="sppiner.gif" />
-                          </div>
+                             <Box sx={{ width: 40 }}>
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             <Skeleton     width={1570} height={28} />
+                             
+                           </Box>
                         ) : (
                           <tbody>
                             {currentProduct?.map((product) => {
@@ -363,13 +357,13 @@ const Order = ({ ...props }) => {
                                   <td>
                                     <Checkbox />
                                   </td>
-                                  <td>{product.order_no}</td>
+                                  <td>{product?.order_no}</td>
                                   <td>
-                                    {moment(product.created_at).format("LL")}
+                                    {moment(product?.created_at).format("LL")}
                                   </td>
-                                  <td>{product.customer_name}</td>
-                                  <td>{product.customer_phone}</td>
-                                  <td>{product.customer_address}</td>
+                                  <td>{product?.customer_name}</td>
+                                  <td>{product?.customer_phone}</td>
+                                  <td>{product?.customer_address}</td>
                                   <td>Mobile </td>
                                   <td>40</td>
                                   <td>14999</td>
@@ -448,7 +442,7 @@ const Order = ({ ...props }) => {
                         }}
                       >
                         <Stack spacing={2}>
-                          {console.log(pageNumbers.length + 1)}
+                          {/* {console.log(pageNumbers.length + 1)} */}
                           <Pagination
                             count={pageNumbers.length}
                             variant="outlined"

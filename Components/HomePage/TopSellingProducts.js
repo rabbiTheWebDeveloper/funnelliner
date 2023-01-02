@@ -5,9 +5,9 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Select,
+  Select
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlinePayments } from "react-icons/md";
 import { topSellingProducts } from "../../pages/api";
 
@@ -25,7 +25,7 @@ const TopSellingProducts = () => {
       setTopSellingProduct(result?.data?.data);
     });
   }, []);
-console.log(TopSellingProducts)
+// console.log(TopSellingProducts)
   return (
 
     <>

@@ -1,14 +1,15 @@
-import { TabContext, TabPanel, TabList } from '@mui/lab';
-import { Box, Button, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Tab, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { AiOutlineCamera } from 'react-icons/ai';
-import { FiEdit } from 'react-icons/fi'
-import { MdProductionQuantityLimits } from 'react-icons/md';
-import { useForm } from 'react-hook-form';
-import Cookies from 'js-cookie';
-import { baseTest, baseUrl } from '../../constant/constant';
-import Swal from 'sweetalert2';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Box, Button, Container, Grid, Tab, TextField } from '@mui/material';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FiEdit } from 'react-icons/fi';
+import { MdProductionQuantityLimits } from 'react-icons/md';
+import Swal from 'sweetalert2';
+import { baseTest } from '../../constant/constant';
+import { headers } from '../../pages/api';
 import AddCategory from './AddCategory';
 
 
@@ -25,6 +26,7 @@ const SubCategory = () => {
 
   // Tabs
   const [value, setValue] = useState('1');
+  const router = useRouter();
 
   const handleChangeTab = (event, newValue) => {
     setValue(newValue);
@@ -52,15 +54,15 @@ const SubCategory = () => {
   //   setImg(e.target.files[0]);
   // };
 
-  const token =Cookies.get('token')
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // const token =Cookies.get('token')
+  // // console.log(token)
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  // };
  
 
   const handleSubCategorySubmit =(data) =>{
-    console.log(data);
+    // console.log(data);
     data.parent_id = data.category_id
 
     let cat ={
@@ -74,7 +76,7 @@ const SubCategory = () => {
     }
 
     // data.status = "1";
-    console.log(cat)
+    // console.log(cat)
 
     axios.post(baseTest + "/client/categories", cat ,{headers: headers}
     )
@@ -85,6 +87,7 @@ const SubCategory = () => {
 
          'success'
        )
+       router.push("/sub-product");
      })
      .catch(function (error) {
        // console.log(error);
@@ -95,7 +98,7 @@ const SubCategory = () => {
          footer: '<a href="">Why do I have this issue?</a>'
        })
      });
-   console.log(data);
+  //  console.log(data);
 
    reset();
 
@@ -137,8 +140,8 @@ const SubCategory = () => {
                   </div>
 
                     <div className="text">
-                      <h4>Products / Categories</h4>
-                      <p>Your Product Categories</p>
+                      <h4>Categories / Sub Categories</h4>
+                      <p>Your Product Sub Categories</p>
                     </div>
 
                   </div>
@@ -158,8 +161,8 @@ const SubCategory = () => {
 
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
-                    <Tab label="Product Information" value="1" />
-                    <Tab label="Product Images" value="2" />
+                    <Tab label="Category Information" value="1" />
+                    <Tab label="Sub Category Information" value="2" />
                   </TabList>
                 </Box>
 
@@ -175,8 +178,8 @@ const SubCategory = () => {
 
                   <div className="DashboardTabsItem">
 
-                    <h4>Update Product Information</h4>
-                    <p>Update your product info</p>
+                    <h4>Update Sub Categories Information</h4>
+                    <p>Update your categories info</p>
 
                     <div className="DashboardForm">
 
@@ -191,7 +194,7 @@ const SubCategory = () => {
                             <div className="left">
 
                               <h5>Category</h5>
-                              <p>This will be displayed on your product page</p>
+                              <p>This will be displayed on your category page</p>
 
                             </div>
 
@@ -240,7 +243,7 @@ const SubCategory = () => {
 
                                       </select>
                                           {errors.category_id && (
-                                            <span>This Product Name required</span>
+                                            <span>This Category Name required</span>
                                           )}
 
                                 </div>
@@ -251,7 +254,7 @@ const SubCategory = () => {
 
                                 <label>Sub Category Name</label>
 
-                                <TextField id="outlined-basic" label="Selling Price" variant="outlined" {...register("name", { required: true })} placeholder='Sub Category' />
+                                <TextField id="outlined-basic" label="" variant="outlined" {...register("name", { required: true })} placeholder='Sub Category' />
 
                                 <div className="svg">
                                   <FiEdit/>

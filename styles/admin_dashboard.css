@@ -145,6 +145,10 @@ a.bg:hover, button.bg:hover{
   margin-top: 0px;
 }
 
+.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
 /* ---------------------------------------------------------------------------------------------------------------------------
   Login
 --------------------------------------------------------------------------------------------------------------------------- */
@@ -197,6 +201,19 @@ a.bg:hover, button.bg:hover{
   width: 100%;
   border: none;
   height: 20px;
+}
+
+.TopSellingProducts .DashboardForm .CustomeInput .Item.Multiline .css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
+  padding: 0;
+}
+
+.TopSellingProducts .DashboardForm .CustomeInput .Item.Multiline textarea#outlined-multiline-static {
+  background: var(--input_bg);
+  border-radius: 10px;
+}
+
+.TopSellingProducts .DashboardForm .CustomeInput .Item.Multiline textarea#outlined-multiline-static {
+  padding: 10px 20px;
 }
 
 .CustomeInput .css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
@@ -2491,6 +2508,8 @@ p.PageLink a svg{
   box-shadow: 3px 9px 28px rgb(0 0 0 / 6%);
   border: 2px solid #DDD;
 }
+
+
 
 .SelectTheme{
   margin-top: 30px;

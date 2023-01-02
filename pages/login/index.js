@@ -10,7 +10,7 @@ import SuperFetch from '../../hook/Axios';
 import withAuth from "../../hook/PrivateRoute";
 import Cookies from 'js-cookie';
 // import withAuth from "../../hook/PrivateRoute";
-
+import Swal from 'sweetalert2'
 
 
 const Login_Part = () => {
@@ -34,7 +34,7 @@ const Login_Part = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data)
+
       SuperFetch.post('/login', {email: data.email, password: data.password})
           .then(response => {
               Cookies.set('token', response.data.token)
@@ -42,10 +42,18 @@ const Login_Part = () => {
               localStorage.setItem('token', response.data.token)
               localStorage.setItem('user', JSON.stringify(response.data.merchant))
               // console.log(response.data.merchant)
-              
+
               router.push('/')
           })
           .catch(errors => {
+            Swal.fire({
+              position: 'top',
+              icon: 'error',
+              text: 'Invalid Email Address Or Password',
+              timer: 1500
+
+            })
+            console.log("errors", errors)
               setErrorText("Invalid Email Address or Password");
           })
   }
@@ -85,14 +93,14 @@ const Login_Part = () => {
             {/* Password */}
             <div className="CustomeInput">
               <label>Password</label>
-              <TextField  {...register("password")} id="outlined-basic" label="Password" variant="outlined" />
+              <TextField type="password"  {...register("password")} id="outlined-basic" label="Password" variant="outlined" />
               {errors &&<span>{errors.password?.message}</span>}
             </div>
 
             {/* Sign Up */}
             <div className="CustomeInput">
             {/* <input className='bg'  /> */}
-              <Button type="submit" className='bg'>Sign In</Button>
+              <Button type="submit" className='bg'>Log In</Button>
               <p>{errorText}</p>
               <p className='forgate'> <Link href=''>Forgot Password ?</Link> </p>
             </div>
@@ -100,11 +108,11 @@ const Login_Part = () => {
 
             {/* Sign Up */}
             <div className="CustomeInput">
-              <p>Already Have An Account ? <Link href='https://master.funnelliner.com/register'>Log In</Link> </p>
+              <p>Already Have An Account ? <Link href='https://funnelliner.com/register'>Sign In</Link> </p>
             </div>
 
             {/* Sign Up */}
-            <div className="CustomeInput">
+            {/* <div className="CustomeInput">
               <h6>Login With Social Media</h6>
 
               <div className="LoginWith d_flex">
@@ -112,16 +120,16 @@ const Login_Part = () => {
                 <Link href=''> <BsGoogle/> </Link>
               </div>
 
-            </div>
+            </div> */}
 
           </div>
 
-          
+
 
         </div>
 
       </section>
-    
+
     </>
 
   )

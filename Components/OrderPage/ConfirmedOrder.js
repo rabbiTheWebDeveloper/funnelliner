@@ -1,29 +1,23 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  CircularProgress,
-  Menu,
-  MenuItem,
-  Pagination,
-  Stack,
-} from "@mui/material";
+import { Box, Button, Checkbox, Menu, MenuItem, Pagination, Stack } from "@mui/material";
+import Skeleton from '@mui/material/Skeleton';
 import axios from "axios";
 import Cookies from "js-cookie";
 import moment from "moment";
+import Link from 'next/link';
 import { useEffect, useState } from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { FiDownloadCloud } from "react-icons/fi";
-import { baseTest, baseUrl } from "../../constant/constant";
 import Select from "react-select";
 import Swal from "sweetalert2";
+import { baseTest, baseUrl } from "../../constant/constant";
+import { headers } from "../../pages/api";
 const options = [
-  { value: "Confirmed", label: "Confirmed", id: 1 },
-  { value: "Cancelled", label: "Cancelled", id: 2 },
-  { value: "Shipped", label: "Shipped", id: 3 },
-  { value: "Delivered", label: "Delivered", id: 4 },
-  { value: "Return", label: "Order Return", id: 5 },
-  { value: "Follow Up", label: "Follow Up", id: 6 },
+  { value: " Steadfast", label: " Steadfast", id: 1 },
+  { value: "REDX", label: "REDX", id: 2 },
+  // { value: "Shipped", label: "Shipped", id: 3 },
+  // { value: "Delivered", label: "Delivered", id: 4 },
+  // { value: "Return", label: "Order Return", id: 5 },
+  // { value: "Follow Up", label: "Follow Up", id: 6 },
 ];
 
 const ConfirmedOrder = ({ ...props }) => {
@@ -72,32 +66,32 @@ const ConfirmedOrder = ({ ...props }) => {
   // confirm order full function
 
   // comment token
-  const token = Cookies.get("token");
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // const token = Cookies.get("token");
+  // // console.log(token)
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  // };
 
   useEffect(() => {
     axios
-      .get(baseUrl + "/client/orders", { headers })
+      .get(baseUrl + "/client/orders", {  headers: headers  })
       .then(function (response) {
         // handle success
         let allProduct = response.data.data;
         const userProduct = allProduct.filter(
-          (word) => word.order_status == "Confirmed"
+          (word) => word.order.order_status == "Confirmed"
         );
         setProducts(userProduct);
       });
   }, []);
 
   const statusSubmit = (id) => {
-    console.log(id);
+    // console.log(id);
     let status = {
       order_id: id,
       status: selectedOption.value,
     };
-    console.log(status);
+    // console.log(status);
 
     axios
       .post(baseTest + "/client/orders/status/update", status, {
@@ -188,9 +182,22 @@ const ConfirmedOrder = ({ ...props }) => {
             </thead>
             {
                 currentProduct.length ===0 ?
-                <div className="Preloader">
-                    <img src="sppiner.gif" />
-                </div>:
+                <Box sx={{ width: 40 }}>
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                <Skeleton     width={1570} height={28} />
+                
+              </Box>
+                :
               <tbody>
               {currentProduct?.map((product) => {
                 return (
@@ -198,20 +205,23 @@ const ConfirmedOrder = ({ ...props }) => {
                     <td>
                       <Checkbox />
                     </td>
-                    <td>{product.order_no}</td>
-                    <td>{moment(product.created_at).format("LL")}</td>
-                    <td>{product.customer_name}</td>
-                    <td>{product.customer_phone}</td>
+                    <td>{product.order.order_no}</td>
+                    <td>{moment(product.order.created_at).format("LL")}</td>
+                    <td>{product.order.customer_name}</td>
+                    <td>{product.order.customer_phone}</td>
                     <td>{product.customer_address}</td>
                     <td>Mobile </td>
                     <td>40</td>
                     <td>14999</td>
                     <td>
                       {" "}
-                      <Button className="Print">
-                        {" "}
-                        Print <FiDownloadCloud />{" "}
-                      </Button>{" "}
+                  
+                  <Button className="Print" >
+                    {/* {console.log(product.order_no)} */}
+                     
+                        <Link href={"/invoice-one/"+ product.order.id}> Print <FiDownloadCloud /></Link>
+                      </Button>
+                  
                     </td>
 
                     <td>

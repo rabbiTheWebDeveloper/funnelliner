@@ -3,16 +3,21 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiOutlineCamera } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { baseLocal, baseTest } from "../../constant/constant";
+import { headers } from "../../pages/api";
 
 const BussnessInfo = () => {
   const [busInfo, setBusInfo] = useState({});
   const [user, setUser] = useState({});
   const [mainImg, setMainImg] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [tfValue, setTFValue] = useState('');
+  const [address, setAddress] = useState('');
+  const [shopId, setShopId] = useState('');
+  const [websiteTitle, setWebsiteTitle] = useState('');
+  const [desc, setDesc] = useState('');
 
   const {
     register,
@@ -23,11 +28,11 @@ const BussnessInfo = () => {
   const handleMainImage = (e) => {
     setMainImg(e.target.files[0]);
   };
-  const token = Cookies.get("token");
-  // console.log(token)
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
+  // const token = Cookies.get("token");
+  // // console.log(token)
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  // };
 
 
   const businessSubmit = (data) => {
@@ -41,7 +46,7 @@ const BussnessInfo = () => {
     formData.append("shop_meta_title", data.shop_meta_title);
     formData.append("shop_meta_description", data.shop_meta_description);
 
-    console.log(formData);
+    // console.log(formData);
 
     axios
       .post(baseTest + "/client/settings/business-info/update", formData, {
@@ -51,7 +56,7 @@ const BussnessInfo = () => {
         Swal.fire("Information update  Add!", response.data.msg, "success");
       })
       .catch(function (error) {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -59,7 +64,7 @@ const BussnessInfo = () => {
           footer: '<a href="">Why do I have this issue?</a>',
         });
       });
-    console.log(data);
+    // console.log(data);
 
     reset();
   };
@@ -71,6 +76,11 @@ const BussnessInfo = () => {
         // handle success
         // let target = response.data.data;
         setBusInfo(response.data.data);
+        setTFValue(response.data.data.name)
+        setShopId(response.data.data.shop_id)
+        setAddress(response.data.data.address)
+        setWebsiteTitle(response.data.data.shop_meta_title)
+        setDesc(response.data.data.shop_meta_description)
       });
   }, []);
  
@@ -83,7 +93,7 @@ const BussnessInfo = () => {
   }, [selectedImage]);
 
  
-  console.log(busInfo);
+  // console.log(busInfo);
   return (
     <>
       <form onSubmit={handleSubmit(businessSubmit)}>
@@ -101,12 +111,13 @@ const BussnessInfo = () => {
               <Grid item xs={9}>
                 <div className="CustomeInput">
                   <div className="Item">
-                    <h2>{busInfo?.name}</h2>
+                    {/* <h2>{busInfo?.name}</h2> */}
                     <label>Shop Name</label>
                     <TextField
                        {...register("shop_name")}
                       id="outlined-basic"
-                      defaultValue={busInfo?.name}
+                      onChange={(newValue) => setTFValue(newValue.target.value)}
+                      value={tfValue}
                       variant="outlined"
                      
                    
@@ -122,7 +133,8 @@ const BussnessInfo = () => {
                     <TextField
                       id="outlined-basic"
                       variant="outlined"
-                      defaultValue={busInfo?.address}
+                      onChange={(newValue) => setAddress(newValue.target.value)}
+                      value={address}
                       {...register("shop_address")}
                     />
 
@@ -213,7 +225,8 @@ const BussnessInfo = () => {
                     <TextField
                       id="outlined-basic"
                       variant="outlined"
-                      defaultValue={busInfo?.shop_id}
+                      onChange={(newValue) => setShopId(newValue.target.value)}
+                      value={shopId}
                       {...register("shop_id")}
                     />
 
@@ -243,6 +256,8 @@ const BussnessInfo = () => {
                     <TextField
                       id="outlined-basic"
                       variant="outlined"
+                      onChange={(newValue) => setWebsiteTitle(newValue.target.value)}
+                      value={websiteTitle}
                       {...register("shop_meta_title")}
                     />
 
@@ -256,6 +271,8 @@ const BussnessInfo = () => {
                     <TextField
                       id="outlined-basic"
                       variant="outlined"
+                      onChange={(newValue) => setDesc(newValue.target.value)}
+                      value={desc}
                       {...register("shop_meta_description")}
                     />
 

@@ -2,6 +2,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import React from 'react';
 import Link from 'next/link';
 import { BsFacebook, BsGoogle } from 'react-icons/bs';
+import withAuth from '../../hook/PrivateRoute';
 
 
 
@@ -72,7 +73,7 @@ const index = () => {
             </div>
 
             {/* Sign Up */}
-            <div className="CustomeInput">
+            {/* <div className="CustomeInput">
               <h6>Login With Social Media</h6>
 
               <div className="LoginWith d_flex">
@@ -80,7 +81,7 @@ const index = () => {
                 <Link href=''> <BsGoogle/> </Link>
               </div>
 
-            </div>
+            </div> */}
 
           </div>
 
@@ -96,4 +97,6 @@ const index = () => {
 
 }
 
-export default index
+export default withAuth(index, {
+  isProtectedRoute: true
+});

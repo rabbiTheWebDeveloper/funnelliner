@@ -1,3 +1,5 @@
+//rejaul import
+export const mainBaseUrl='http://127.0.0.1:8000';
 
 
 export const baseUrl='https://funnelliner.com/api/v1';
