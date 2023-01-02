@@ -149,6 +149,19 @@ a.bg:hover, button.bg:hover{
   background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
+.Sidebar .MenuItem .MuiButtonBase-root {
+    padding: 0;
+}
+.MuiContainer-root.MuiContainer-maxWidthSm.css-1m6pqln {
+    max-width: calc(100% - 350px);
+    margin-right: 30px;
+    padding: 0;
+}
+
+.Login .MuiFormControl-root.MuiTextField-root.css-i44wyl {
+    width: 100%;
+}
+
 /* ---------------------------------------------------------------------------------------------------------------------------
   Login
 --------------------------------------------------------------------------------------------------------------------------- */
